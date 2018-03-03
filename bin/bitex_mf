@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'bitex_mf'
+
+Bitex_MF.test
+
