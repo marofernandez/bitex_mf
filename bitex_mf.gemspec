@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.description = "This is my first project to handle Bitex through its API"
   s.authors     = ["Mariano Fernandez"]
   s.email       = 'mfernandez@gmail.com'
-  s.files       = ["lib/bitex_mf.rb"]
+  s.files       = ["lib/bitex_mf.rb", "lib/bitex_mf/settings.rb", "settings.rb.sample"]
   s.homepage    =
     'https://github.com/marofernandez'
   s.license       = 'MIT'

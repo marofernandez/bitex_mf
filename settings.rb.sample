@@ -1,0 +1,4 @@
+# Bitex API Credential
+bitex_api_read_key 'your_bitex_api_read_key'
+bitex_api_write_key 'your_bitex_api_write_key'
+
