@@ -2,8 +2,8 @@
 
 require 'bitex_mf/settings'
 BitexMFSettings::Settings.load_default
-puts BitexMFSettings::Settings.bitex_api_read_key
+#puts BitexMFSettings::Settings.bitex_api_read_key
 
 require 'bitex_mf'
 Bitex_MF.Ticker
-Bitex_MF.OrderBook
+#Bitex_MF.OrderBook
