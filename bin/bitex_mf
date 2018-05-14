@@ -4,6 +4,27 @@ require 'bitex_mf/settings'
 BitexMFSettings::Settings.load_default
 #puts BitexMFSettings::Settings.bitex_api_read_key
 
+require 'fileutils'
 require 'bitex_mf'
-Bitex_MF.Ticker
-#Bitex_MF.OrderBook
+
+#Bitex_MF.CEXioGetOrder('5908277659')
+#exit
+
+#cex_api = CEX::API.new('','','')
+#cexio_ticker = cex_api.ticker('BTC/USD')
+#puts "CEXio ASK: #{cexio_ticker["ask"].to_f.round(8)}"
+#Bitex_MF.RunOnceRev(25, cexio_ticker["ask"].to_f)
+
+#Bitex_MF.TickersView
+#Bitex_MF.TickerAnalysisBitexCEXio
+#Bitex_MF.RunOnce
+
+stop_file = 'bitex_mf.stop'
+unless FileTest.exists?(stop_file)
+	Bitex_MF.RunWhenSpreadBiggerThan(0.0075)
+	#Bitex_MF.RunWhenSpreadBiggerThan(-0.01)
+end
+
+#Bitex_MF.MakeTransactionCEXio
+#Bitex_MF.CEXioGetOrder('5837580578')
+#Bitex_MF.CEXioPutBuyOrder('0.00586998'.to_f,'25.42'.to_f)
