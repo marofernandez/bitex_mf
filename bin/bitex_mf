@@ -1,12 +1,5 @@
 #!/usr/bin/env ruby
 
-timestamp = Time.new
-
-puts timestamp.to_s
-sleep 2
-puts "[#{Time.now.to_s}]"
-exit
-
 require 'bitex_mf/settings'
 BitexMFSettings::Settings.load_default
 #puts BitexMFSettings::Settings.bitex_api_read_key
