@@ -43,21 +43,21 @@ class Bitex_MF
       cexio_bitex_spread = 1 - (cexio_ticker["ask"] / bitex_ticker[:bid])
       spread_with_fees_rev = cexio_bitex_spread - (bitex_commission + cexio_commission_taker)
       if ((ciclos % 30) == 0) then
-        puts "[DEBUG]: Checkpoint: #{ciclos}"
-        puts "[DEBUG]: BUY in Bitex @ #{bitex_ticker[:ask].round(2)} and SELL in CEXio @ #{cexio_ticker["bid"].round(2)} - SPREAD: #{bitex_cexio_spread.round(5)} (#{spread_with_fees.round(5)})"
-        puts "[DEBUG]: BUY in CEXio @ #{cexio_ticker["ask"].round(2)} and SELL in Bitex @ #{bitex_ticker[:bid].round(2)} - SPREAD: #{cexio_bitex_spread.round(5)} (#{spread_with_fees_rev.round(5)})"
+        puts "[#{Time.now.to_s}][DEBUG]: Checkpoint: #{ciclos}"
+        puts "[#{Time.now.to_s}][DEBUG]: BUY in Bitex @ #{bitex_ticker[:ask].round(2)} and SELL in CEXio @ #{cexio_ticker["bid"].round(2)} - SPREAD: #{bitex_cexio_spread.round(5)} (#{spread_with_fees.round(5)})"
+        puts "[#{Time.now.to_s}][DEBUG]: BUY in CEXio @ #{cexio_ticker["ask"].round(2)} and SELL in Bitex @ #{bitex_ticker[:bid].round(2)} - SPREAD: #{cexio_bitex_spread.round(5)} (#{spread_with_fees_rev.round(5)})"
       end
       if (spread_with_fees > target_spread) then
         puts "[DEBUG]: RunOnce:..."
         puts "[DEBUG]: Checkpoint: #{ciclos}"
-        puts "[INFO]: BUY in Bitex @ #{bitex_ticker[:ask].round(2)} and SELL in CEXio @ #{cexio_ticker["bid"].round(2)} - SPREAD: #{bitex_cexio_spread.round(5)} (#{spread_with_fees.round(5)})"
+        puts "[#{Time.now.to_s}][INFO]: BUY in Bitex @ #{bitex_ticker[:ask].round(2)} and SELL in CEXio @ #{cexio_ticker["bid"].round(2)} - SPREAD: #{bitex_cexio_spread.round(5)} (#{spread_with_fees.round(5)})"
         self.RunOnce(usd_to_invest, bitex_ticker[:ask])
         puts "[DEBUG]: Waiting 15 min..."
         sleep 899
       elsif (spread_with_fees_rev > target_spread) then
         puts "[DEBUG]: RunOnceRev:..."
         puts "[DEBUG]: Checkpoint: #{ciclos}"
-        puts "[DEBUG]: BUY in CEXio @ #{cexio_ticker["ask"].round(2)} and SELL in Bitex @ #{bitex_ticker[:bid].round(2)} - SPREAD: #{cexio_bitex_spread.round(5)} (#{spread_with_fees_rev.round(5)})"
+        puts "[#{Time.now.to_s}][INFO]: BUY in CEXio @ #{cexio_ticker["ask"].round(2)} and SELL in Bitex @ #{bitex_ticker[:bid].round(2)} - SPREAD: #{cexio_bitex_spread.round(5)} (#{spread_with_fees_rev.round(5)})"
         self.RunOnceRev(usd_to_invest, cexio_ticker["ask"])
         puts "[DEBUG]: Waiting 15 min..."
         sleep 899
@@ -70,42 +70,42 @@ class Bitex_MF
 
   def self.RunOnce(usd_to_invest = 50, bitex_ticker_ask = 100)
     usd_available_bitex = self.GetUSDAvailableBitex
-    puts "[INFO]: usd_available_bitex = #{usd_available_bitex}"
+    puts "[#{Time.now.to_s}][INFO]: usd_available_bitex = #{usd_available_bitex}"
     if (usd_available_bitex > usd_to_invest) then
         btc_available_cexio = self.GetBTCAvailableCEXio
-        puts "[INFO]: btc_available_cexio = #{btc_available_cexio}"
+        puts "[#{Time.now.to_s}][INFO]: btc_available_cexio = #{btc_available_cexio}"
         if (btc_available_cexio > (usd_to_invest / bitex_ticker_ask)) then
           received_btc = self.MakeTransactionBitex(usd_to_invest)
-          puts "[INFO]: received_btc = #{received_btc}"
+          puts "[#{Time.now.to_s}][INFO]: received_btc = #{received_btc}"
           usd_collected = self.MakeTransactionCEXio(received_btc)
-          puts "[INFO]: usd_collected = #{usd_collected}"
+          puts "[#{Time.now.to_s}][INFO]: usd_collected = #{usd_collected}"
         else
-          puts "[INFO]: No hay BTC suficientes para operar en CEXio"
+          puts "[#{Time.now.to_s}][INFO]: No hay BTC suficientes para operar en CEXio"
         end
     else
-      puts "[INFO]: No hay USD suficientes para operar en Bitex"
+      puts "[#{Time.now.to_s}][INFO]: No hay USD suficientes para operar en Bitex"
     end
   end
 
   def self.RunOnceRev(usd_to_invest = 50, cexio_ticker_ask = 100)
     usd_available_cexio = self.GetUSDAvailableCEXio
-    puts "[INFO]: usd_available_cexio = #{usd_available_cexio}"
+    puts "[#{Time.now.to_s}][INFO]: usd_available_cexio = #{usd_available_cexio}"
     usd_available_cexio = 51
     if (usd_available_cexio > usd_to_invest) then
         btc_available_bitex = self.GetBTCAvailableBitex
-        puts "[INFO]: btc_available_bitex = #{btc_available_bitex}"
+        puts "[#{Time.now.to_s}][INFO]: btc_available_bitex = #{btc_available_bitex}"
         if (btc_available_bitex > (usd_to_invest / cexio_ticker_ask)) then
           received_btc = self.MakeTransactionCEXioRev(usd_to_invest, cexio_ticker_ask)
-          puts "[INFO]: received_btc = #{received_btc}"
+          puts "[#{Time.now.to_s}][INFO]: received_btc = #{received_btc}"
           if (received_btc > 0) then
             usd_collected = self.MakeTransactionBitexRev(received_btc)
-            puts "[INFO]: usd_collected = #{usd_collected}"
+            puts "[#{Time.now.to_s}][INFO]: usd_collected = #{usd_collected}"
           end
         else
-          puts "[INFO]: No hay BTC suficientes para operar en Bitex"
+          puts "[#{Time.now.to_s}][INFO]: No hay BTC suficientes para operar en Bitex"
         end
     else
-      puts "[INFO]: No hay USD suficientes para operar en CEXio"
+      puts "[#{Time.now.to_s}][INFO]: No hay USD suficientes para operar en CEXio"
     end
   end
 
@@ -178,7 +178,7 @@ class Bitex_MF
           if (order_result["ta:USD"]) then
             usd_collected = usd_collected + order_result["ta:USD"].to_f - order_result["fa:USD"].to_f
           end
-          puts "[INFO]: CEXIO_ASK: ID #{order_result["id"]}, STATUS #{order_result["complete"]}, USD #{usd_collected.round(2)}, BTC -#{order_result["a:BTC:cds"].to_f.round(8)}, PRICE #{order_result["price"].to_f.round(2)}"
+          puts "[#{Time.now.to_s}][INFO]: CEXIO_ASK: ID #{order_result["id"]}, STATUS #{order_result["complete"]}, USD #{usd_collected.round(2)}, BTC -#{order_result["a:BTC:cds"].to_f.round(8)}, PRICE #{order_result["price"].to_f.round(2)}"
         end
         if (usd_collected > 0) then
 #          puts "=="
@@ -193,7 +193,7 @@ class Bitex_MF
           end
           bid_result = cex_api.place_order('buy', btc_to_buy.round(8), price_to_bid.round(1), 'BTC/USD')
           puts "[DEBUG]: Bid result en CEXio #{bid_result}"
-          puts "[INFO]: CEXIO_BID: ID #{bid_result["id"]}, STATUS #{bid_result["complete"]}, USD -#{usd_collected.round(2)}, BTC #{bid_result["amount"].to_f.round(8)}, PRICE #{bid_result["price"].to_f.round(2)}"
+          puts "[#{Time.now.to_s}][INFO]: CEXIO_BID: ID #{bid_result["id"]}, STATUS #{bid_result["complete"]}, USD -#{usd_collected.round(2)}, BTC #{bid_result["amount"].to_f.round(8)}, PRICE #{bid_result["price"].to_f.round(2)}"
         end
         usd_collected
 
@@ -203,7 +203,7 @@ class Bitex_MF
         0
       end
     else
-      puts "[INFO]: No tenemos BTC disponibles en CEXio para vender"
+      puts "[#{Time.now.to_s}][INFO]: No tenemos BTC disponibles en CEXio para vender"
       0
     end
   end
@@ -253,7 +253,7 @@ class Bitex_MF
           if (order_result["a:BTC:cds"]) then
             produced_quantity = produced_quantity + order_result["a:BTC:cds"].to_f
           end
-          puts "[INFO]: CEXIO_BID: ID #{order_result["id"]}, STATUS #{order_result["complete"]}, BTC #{produced_quantity.round(8)}, BTC -#{order_result["a:USD:cds"].to_f.round(2)}, PRICE #{order_result["price"].to_f.round(2)}"
+          puts "[#{Time.now.to_s}][INFO]: CEXIO_BID: ID #{order_result["id"]}, STATUS #{order_result["complete"]}, BTC #{produced_quantity.round(8)}, BTC -#{order_result["a:USD:cds"].to_f.round(2)}, PRICE #{order_result["price"].to_f.round(2)}"
         end
 
         if (produced_quantity > 0) then
@@ -270,7 +270,7 @@ class Bitex_MF
 
           ask_result = cex_api.place_order('sell', btc_to_sell.round(8), price_to_ask.round(1), 'BTC/USD')
           puts "[DEBUG]: Ask result en CEXio #{ask_result}"
-          puts "[INFO]: CEXIO_ASK: ID #{ask_result["id"]}, STATUS #{ask_result["complete"]}, USD #{usd_to_invest.round(2)}, BTC -#{ask_result["amount"].to_f.round(8)}, PRICE #{ask_result["price"].to_f.round(2)}"
+          puts "[#{Time.now.to_s}][INFO]: CEXIO_ASK: ID #{ask_result["id"]}, STATUS #{ask_result["complete"]}, USD #{usd_to_invest.round(2)}, BTC -#{ask_result["amount"].to_f.round(8)}, PRICE #{ask_result["price"].to_f.round(2)}"
         end
         produced_quantity
 
@@ -346,7 +346,7 @@ class Bitex_MF
           produced_quantity = order_result.produced_quantity
         end
         if (produced_quantity > 0) then
-          puts "[INFO]: BITEX_BID: ID #{order_result.id}, STATUS #{order_result.status}, USD -#{order_result.amount.round(2)}, BTC #{order_result.produced_quantity.round(8)}, PRICE #{order_result.price.round(2)}"
+          puts "[#{Time.now.to_s}][INFO]: BITEX_BID: ID #{order_result.id}, STATUS #{order_result.status}, USD -#{order_result.amount.round(2)}, BTC #{order_result.produced_quantity.round(8)}, PRICE #{order_result.price.round(2)}"
 #          puts "=="
 #          puts "Creamos la orden de venta en Bitex para cuando suba el bitcoin recuperar los dolares"
           btc_to_sell = produced_quantity * (1 - margin_to_win)
@@ -362,7 +362,7 @@ class Bitex_MF
           puts "[DEBUG]:   Ask Status: #{ask_result.status}"
           puts "[DEBUG]:   Ask Price: #{ask_result.price}"
           puts "[DEBUG]:   Ask Quantity: #{ask_result.quantity}"
-          puts "[INFO]: BITEX_ASK: ID #{ask_result.id}, STATUS #{ask_result.status}, USD #{usd_to_invest.round(2)}, BTC -#{ask_result.quantity.round(8)}, PRICE #{ask_result.price.round(2)}"
+          puts "[#{Time.now.to_s}][INFO]: BITEX_ASK: ID #{ask_result.id}, STATUS #{ask_result.status}, USD #{usd_to_invest.round(2)}, BTC -#{ask_result.quantity.round(8)}, PRICE #{ask_result.price.round(2)}"
         end
         produced_quantity
       else
@@ -430,7 +430,7 @@ class Bitex_MF
         usd_collected = 0
         if (produced_quantity > 0) then
           usd_collected = produced_quantity
-          puts "[INFO]: BITEX_ASK: ID #{order_result.id}, STATUS #{order_result.status}, USD #{order_result.produced_amount}, BTC -#{order_result.quantity}, PRICE #{order_result.price}"
+          puts "[#{Time.now.to_s}][INFO]: BITEX_ASK: ID #{order_result.id}, STATUS #{order_result.status}, USD #{order_result.produced_amount}, BTC -#{order_result.quantity}, PRICE #{order_result.price}"
 #
           btc_to_buy = btc_to_sell * (1 + margin_to_win)
           puts "[DEBUG]: Compamos #{btc_to_buy} bitcoins para ganar un margin #{margin_to_win}"
@@ -444,7 +444,7 @@ class Bitex_MF
           bid_result = Bitex::Bid.create!(:btc, usd_collected, price_to_bid.round(2))
           puts "[DEBUG]: Bid ID: #{bid_result.id}"
           puts "[DEBUG]: Bid Status: #{bid_result.status}"
-          puts "[INFO]: BITEX_BID: ID #{bid_result.id}, STATUS #{bid_result.status}, USD #{bid_result.amount}, BTC #{btc_to_buy}, PRICE #{price_to_bid}"
+          puts "[#{Time.now.to_s}][INFO]: BITEX_BID: ID #{bid_result.id}, STATUS #{bid_result.status}, USD #{bid_result.amount}, BTC #{btc_to_buy}, PRICE #{price_to_bid}"
 
         end
         usd_collected
@@ -455,7 +455,7 @@ class Bitex_MF
         0
       end
     else
-      puts "[INFO]: No tenemos BTC disponibles en Bitex para vender"
+      puts "[#{Time.now.to_s}][INFO]: No tenemos BTC disponibles en Bitex para vender"
       0
     end
   end
