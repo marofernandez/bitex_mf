@@ -32,7 +32,7 @@ class Bitex_MF
     cex_api = CEX::API.new('','','')
     cexio_commission_taker = 0.0025
     bitex_commission = 0.005
-    usd_to_invest = 50
+    usd_to_invest = BitexMFSettings::Settings.usd_to_invest
 
     ciclos = 3600 * 6
     while (ciclos > 0)
@@ -68,7 +68,7 @@ class Bitex_MF
     puts "[DEBUG]: We went for 6 hours straihgt... time to go home."
   end
 
-  def self.RunOnce(usd_to_invest = 50, bitex_ticker_ask = 100)
+  def self.RunOnce(usd_to_invest = 0, bitex_ticker_ask = 100)
     usd_available_bitex = self.GetUSDAvailableBitex
     puts "[#{Time.now.to_s}][INFO]: usd_available_bitex = #{usd_available_bitex}"
     if (usd_available_bitex > usd_to_invest) then
@@ -87,7 +87,7 @@ class Bitex_MF
     end
   end
 
-  def self.RunOnceRev(usd_to_invest = 50, cexio_ticker_ask = 100)
+  def self.RunOnceRev(usd_to_invest = 0, cexio_ticker_ask = 100)
     usd_available_cexio = self.GetUSDAvailableCEXio
     puts "[#{Time.now.to_s}][INFO]: usd_available_cexio = #{usd_available_cexio}"
     usd_available_cexio = 51
@@ -118,7 +118,7 @@ class Bitex_MF
     cex_api = CEX::API.new(BitexMFSettings::Settings.cexio_userid, BitexMFSettings::Settings.cexio_key, BitexMFSettings::Settings.cexio_secret)
     cexio_commission_taker = 0.0025
     cexio_commission_maker = 0.0016
-    margin_to_win = 0.02 # 2%
+    margin_to_win = BitexMFSettings::Settings.margin_to_win
 
     if (btc_available_cexio > btc_to_sell) then
 #      puts "Colocamos la orden de venta en CEXio"
@@ -214,7 +214,7 @@ class Bitex_MF
     cex_api = CEX::API.new(BitexMFSettings::Settings.cexio_userid, BitexMFSettings::Settings.cexio_key, BitexMFSettings::Settings.cexio_secret)
     cexio_commission_taker = 0.0025
     cexio_commission_maker = 0.0016
-    margin_to_win = 0.02 # 2%
+    margin_to_win = BitexMFSettings::Settings.margin_to_win
 
     if (usd_to_invest > 0) then
 
@@ -305,7 +305,7 @@ class Bitex_MF
 
     Bitex.api_key = BitexMFSettings::Settings.bitex_api_write_key
     bitex_commission = 0.005
-    margin_to_win = 0.02 # 2%
+    margin_to_win = BitexMFSettings::Settings.margin_to_win
 
     if (usd_to_invest > 0) then
 #      puts "Colocamos orden de compra en Bitex"
@@ -384,7 +384,7 @@ class Bitex_MF
 
     Bitex.api_key = BitexMFSettings::Settings.bitex_api_write_key
     bitex_commission = 0.005
-    margin_to_win = 0.02 # 2%
+    margin_to_win = BitexMFSettings::Settings.margin_to_win
 
     if ((api_test_flag == 1) && (btc_to_sell == 0)) then
       btc_to_sell = 0.005

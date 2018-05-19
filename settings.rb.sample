@@ -2,3 +2,14 @@
 bitex_api_read_key 'your_bitex_api_read_key'
 bitex_api_write_key 'your_bitex_api_write_key'
 
+# CEXio API Key
+cexio_userid 'your_cexio_userid'
+cexio_key 'your_cexio_key'
+cexio_secret 'your_cexio_secret'
+
+# USD to Invest each run
+usd_to_invest 50
+
+# Margin to win in each recover transaction
+margin_to_win 0.02
+
